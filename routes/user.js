@@ -95,8 +95,19 @@ router.get("/profile", isAuthenticated, async (req, res) => {
   res.json(viewProfile);
 });
 
-router.post("/update-profile", isAuthenticated, async (req, res) => {
-  const updateProfile = await User.findByIdAndUpdate();
+// router.post("/update-profile", isAuthenticated, async (req, res) => {
+//   const updateProfile = await User.findByIdAndUpdate();
+// });
+
+// D
+
+router.delete("/delete", isAuthenticated, async (req, res) => {
+  try {
+    const deleteUser = await User.findByIdAndDelete(req.user.id);
+    res.json(deleteUser);
+  } catch (err) {
+    res.json(err.message);
+  }
 });
 
 module.exports = router;
