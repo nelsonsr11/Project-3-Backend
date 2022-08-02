@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { isAuthenticated } = require("../middleware/auth");
 const fileUploader = require("../middleware/cloudinary");
 const saltround = 10;
+const Team = require("../models/Team");
 
 router.post("/signup", async (req, res) => {
   if (
@@ -41,7 +42,7 @@ router.post("/signup", async (req, res) => {
       algorithm: "HS256",
       expiresIn: "6H",
     });
-    res.json(token);
+    res.json({ token: token, id: newUser._id });
   } catch (err) {
     res.json(err.message);
   }
@@ -75,7 +76,7 @@ router.post("/login", async (req, res) => {
       algorithm: "HS256",
       expiresIn: "6H",
     });
-    res.json(token);
+    res.json({ token: token, id: foundUser._id });
   } catch (err) {
     res.json(err.message);
   }
@@ -88,5 +89,14 @@ router.get("/login-test", isAuthenticated, (req, res) => {
 router.post("/add-picture", fileUploader.single("imageUrl"), async (req, res) =>
   res.json(req.file)
 );
+
+router.get("/profile", isAuthenticated, async (req, res) => {
+  const viewProfile = await User.findById(req.user.id);
+  res.json(viewProfile);
+});
+
+router.post("/update-profile", isAuthenticated, async (req, res) => {
+  const updateProfile = await User.findByIdAndUpdate();
+});
 
 module.exports = router;
