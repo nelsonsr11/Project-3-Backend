@@ -49,8 +49,15 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+// mongoose
+//   .connect("mongodb://localhost/test-app")
+//   .then((x) =>
+//     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+//   )
+//   .catch((err) => console.error("Error connecting to mongo", err));
+
 mongoose
-  .connect("mongodb://localhost/test-app")
+  .connect(process.env.MONGODB_URI)
   .then((x) =>
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   )
